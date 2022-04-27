@@ -1,11 +1,11 @@
 
-const baseUrlPeople = 'https://www.swapi.tech/api/people/';
+const baseUrl = 'https://www.swapi.tech/api';
 
 const people = {
   getById: async (id) => {
     // Buscar un personaje por el id y retornar el objeto con los datos
     try {
-      const resp = await fetch(`${baseUrlPeople}${id}`);
+      const resp = await fetch(`${baseUrl}${id}`);
       if (resp.ok) return await resp.json();
       console.error(resp.status, resp.statusText);
       return [];
@@ -18,7 +18,7 @@ const people = {
   getList: async () => {
     // Ejemplo de peticion https://www.swapi.tech/api/people
     try {
-      const resp = await fetch(`${baseUrlPeople}`);
+      const resp = await fetch(`${baseUrl}/people`);
       if (resp.ok) return await resp.json();
       console.error(resp.status, resp.statusText);
       return [];
@@ -31,7 +31,7 @@ const people = {
   getListByLimit: async (page = 1, limit = 10) => {
     // Ejemplo de peticion https://www.swapi.tech/api/people?limit=20&page=2
     try {
-      const resp = await fetch(`${baseUrlPeople}?limit=${limit}&page=${page}`);
+      const resp = await fetch(`${baseUrl}?limit=${limit}&page=${page}`);
       if (resp.ok) return await resp.json();
       console.error(resp.status, resp.statusText);
       return [];
@@ -43,12 +43,10 @@ const people = {
 };
 
 
-const baseUrlPlanets = 'https://www.swapi.tech/api/planets'
-
 const planets1 = {
   getListPlanets: async () => {
     try {
-      const resp = await fetch(baseUrlPlanets);
+      const resp = await fetch(`${baseUrl}/planets`);
       if (resp.ok) return await resp.json();
       console.error(resp.status, resp.statusText);
       return [];
@@ -59,5 +57,19 @@ const planets1 = {
   }
 };
 
+const vehicle = {
+  getListVehicles: async () => {
+  try {
+    const resp = await fetch(`${baseUrl}/vehicles`);
+    if (resp.ok) return await resp.json();
+    console.error(resp.status, resp.statusText);
+    return []
+  }
+  catch (error) {
+    console.error("Error en la API", error);
+    return []
+  }
+  }
+}
 
-export { people, planets1 };
+export { people, planets1, vehicle };

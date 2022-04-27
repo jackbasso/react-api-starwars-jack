@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { ListGroup, Card, Button } from 'react-bootstrap';
-import { people, planets1 } from './ApiFetch.js';
+import { people, planets1, vehicle } from './ApiFetch.js';
+import '../../css/list.css';
 
-export default function List() {
+function List() {
   const [character, setCharacter] = useState([]);
   const [planets, setPlanets] = useState([]);
   const [vehicles, setVehicles] = useState([])
@@ -19,7 +20,13 @@ export default function List() {
     })
   }
 
-  function getCharacter() {
+  const listVehicles = () => {
+    vehicle.getListVehicles().then((data) => {
+      setVehicles(data.results)
+    })
+  }
+
+  const getCharacter = () => {
     if (!character) return
     console.log(character)
     return character.map((person) => {
@@ -62,7 +69,27 @@ export default function List() {
       })
     };
 
-
+    function getVehicle() {
+      if (!vehicles) return
+      console.log(vehicles)
+      return vehicles.map((vehi) => {
+        return (
+          <ListGroup.Item key={vehi.uid}>
+            <Card style={{ width: '15rem' }}>
+              <Card.Img variant="top" src={`https://starwars-visualguide.com/assets/img/vehicles/${vehi.uid}.jpg`} />
+              <Card.Body>
+                <Card.Title>{vehi.name}</Card.Title>
+                <Card.Text>
+                  Some quick example text to build on the card title and make up the bulk of
+                  the card's content.
+                </Card.Text>
+                <a href={vehi.url}><Button variant="primary">Learn more</Button></a>
+              </Card.Body>
+            </Card>
+          </ListGroup.Item>
+        )
+      });
+    }
 
 
 
@@ -71,42 +98,33 @@ export default function List() {
     useEffect(() => {
       listPeople()
       listPlanets()
+      listVehicles()
     }, [])
 
 
     return (
       <>
         <div>
-          <h2>Characters</h2>
-          <ListGroup horizontal>
+          <h1>Characters</h1>
+          <ListGroup horizontal style={{ "overflowX": "scroll" }} >
             {getCharacter()}
           </ListGroup >
         </div>
         <div>
-          <h2>Planets</h2>
-          <ListGroup horizontal>
+          <h1>Planets</h1>
+          <ListGroup horizontal style={{ "overflowX": "scroll" }} >
             {getPlanet()}
           </ListGroup>
         </div>
 
         <div>
-          <ListGroup horizontal>
-            <ListGroup.Item>
-              <h2>Vehicles</h2>
-              <Card style={{ width: '18rem' }}>
-                <Card.Img variant="top" src="https://starwars-visualguide.com/assets/img/characters/1.jpg" />
-                <Card.Body>
-                  <Card.Title>Card Title</Card.Title>
-                  <Card.Text>
-                    Some quick example text to build on the card title and make up the bulk of
-                    the card's content.
-                  </Card.Text>
-                  <Button variant="primary">Go somewhere</Button>
-                </Card.Body>
-              </Card>
-            </ListGroup.Item>
+        <h1>Vehicles</h1>
+          <ListGroup horizontal style={{ "overflowX": "scroll" }} >
+            {getVehicle()}
           </ListGroup>
         </div>
       </>
     )
   };
+
+  export default List;
